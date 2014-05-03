@@ -1,0 +1,45 @@
+1) <mainFunction> -> MAIN SQO SQC <stmtsAndFunctionDefs> END SEMICOLON
+2) <stmtsAndFunctionDefs> -> <stmtOrFunctionDef> <F>
+2) <F> -> <stmtsAndFunctionDefs> | EPSILON
+3) <stmtOrFunctionDef> -> <stmt> | <functionDef>
+4) <stmt> -> <declarationStmt> | <assignmentStmt_type1> | <assignmentStmt_type2> | <ifStmt> | <ioStmt> | <funCallStmt> SEMICOLON
+5) <functionDef> -> FUNCTION SQO <parameter_list> SQC ASSIGNOP FUNID SQO <parameter_list> SQC <stmtsAndFunctionDefs> END SEMICOLON
+6) <parameter_list> -> <type> ID <remainingList>
+7) <type> -> INT | REAL | STRING | MATRIX
+8) <remainingList> -> COMMA <parameter_list> | EPSILON
+8) <declarationStmt> -> <type> <var_list> SEMICOLON
+10) <var_list> -> ID <more_ids>
+11) <more_ids> -> COMMA <var_list> | EPSILON
+12) <assignmentStmt_type1> -> <leftHandSide_singleVar> ASSIGNOP <rightHandSide_type1> SEMICOLON
+13) <assignmentStmt_type2> -> <leftHandSide_listVar> ASSIGNOP <rightHandSide_type2> SEMICOLON
+14) <leftHandSide_singleVar> -> ID
+15) <leftHandSide_listVar> -> SQO <var_list> SQC
+16) <rightHandSide_type1> -> <arithmeticExpression> | <sizeExpression> | <funCallStmt>
+17) <rightHandSide_type2> -> <sizeExpression> | <funCallStmt>
+18) <sizeExpression> -> SIZE ID
+19) <ifStmt> -> IF OP <booleanExpression> CL <stmt> <otherStmts> <A>
+20) <A> -> ELSE <stmt> <otherStmts> ENDIF SEMICOLON |  ENDIF SEMICOLON
+21) <otherStmts> -> <stmt> <otherStmts> | EPSILON
+22) <ioStmt> -> READ OP ID CL SEMICOLON | PRINT OP ID CL SEMICOLON
+23) <funCallStmt> -> FUNID OP <inputParameterList> CL
+24) <inputParameterList> -> <var> <listVar> | EPSILON
+25) <listVar> -> COMMA <inputParameterList> | EPSILON
+26) <arithmeticExpression> -> <arithmeticTerm> <Z>
+26) <Z> -> <operator_lowPrecedence> <arithmeticExpression> | EPSILON
+27) <arithmeticTerm> -> <factor> <Y>
+27) <Y> -> <operator_highPrecedence> <arithmeticTerm> | EPSILON
+28) <factor> -> OP <arithmeticExpression> CL | <var>
+30) <operator_lowPrecedence> -> PLUS | MINUS
+31) <operator_highPrecedence> -> MUL | DIV
+32) <booleanExpression> -> OP <booleanExpression> CL <logicalOp> OP <booleanExpression> CL | NOT OP <booleanExpression> CL
+33) <booleanExpression> -> <constrainedVars> <relationalOp> <constrainedVars>
+34) <constrainedVars> -> ID | NUM | RNUM
+35) <var> -> ID <E> | NUM | RNUM | STR | <matrix>
+35) <E> -> SQO NUM COMMA NUM SQC | EPSILON
+36) <matrix> -> SQO <rows> SQC
+37) <rows> -> <row> <B>
+37) <B> -> SEMICOLON <rows> | EPSILON
+38) <row> -> NUM <remainingColElements>
+39) <remainingColElements> -> COMMA NUM <remainingColElements> | EPSILON 
+41) <logicalOp> -> AND | OR
+42) <relationalOp> -> LT | LE | EQ | GT | GE | NE
